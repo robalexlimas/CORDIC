@@ -17,11 +17,11 @@ file data_z_input: text open READ_MODE is "../VHDL/input/input_z.txt";
 file data_mode_input: text open READ_MODE is "../VHDL/input/input_mode.txt";
 file data_enable_input: text open READ_MODE is "../VHDL/input/input_enable.txt";
 
-file data_x_output: text open WRITE_MODE is "../VHDL/output/output_x.txt";
-file data_y_output: text open WRITE_MODE is "../VHDL/output/output_y.txt";
-file data_z_output: text open WRITE_MODE is "../VHDL/output/output_z.txt";
-file data_mode_output: text open WRITE_MODE is "../VHDL/output/output_mode.txt";
-file data_enable_output: text open WRITE_MODE is "../VHDL/output/output_enable.txt";
+file data_x_output: text open WRITE_MODE is "../VHDL/output/output_x_vhdl.txt";
+file data_y_output: text open WRITE_MODE is "../VHDL/output/output_y_vhdl.txt";
+file data_z_output: text open WRITE_MODE is "../VHDL/output/output_z_vhdl.txt";
+file data_mode_output: text open WRITE_MODE is "../VHDL/output/output_mode_vhdl.txt";
+file data_enable_output: text open WRITE_MODE is "../VHDL/output/output_enable_vhdl.txt";
 
 signal x_i, y_i, z_i: std_logic_vector(n-1 downto 0) := (others=>'0');
 signal x_o, y_o, z_o: std_logic_vector(n-1 downto 0);
