@@ -2,6 +2,8 @@
 --Stream Processing CORDIC Algorithm Implementation
 --Author: Robert Limas
 --Year: 2020
+--Research Group GIRA
+--Universidad Pedagogica y Tecnologica de Colombia
 --
 --Inputs:
 --    x_i (required), y_i (required), z_i (required), mode (required), arctan (required)

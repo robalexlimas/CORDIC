@@ -1,3 +1,17 @@
+--**********************************************************************************************************************
+--Stream Processing CORDIC Algorithm Implementation
+--Author: Robert Limas
+--Year: 2020
+--Research Group GIRA
+--Universidad Pedagogica y Tecnologica de Colombia
+--
+--Test bench file
+--
+--Description:
+--This file is to verify the correct operation of the implementation.
+--It read the txt file as input and generate the output files corresponding.
+--**********************************************************************************************************************
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;

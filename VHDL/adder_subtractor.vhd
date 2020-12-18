@@ -2,6 +2,8 @@
 --Stream Processing CORDIC Algorithm Implementation
 --Author: Robert Limas
 --Year: 2020
+--Research Group GIRA
+--Universidad Pedagogica y Tecnologica de Colombia
 --
 --Inputs:
 --    add_sub ('0' -> add a+b, '1' -> subtract a-b), a (summand), b (summand)

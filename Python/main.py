@@ -6,7 +6,7 @@ Year: 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
-from CORDIC import cordic, coding, decoding
+from CORDIC import coding, decoding
 
 
 def write_file(file, data):
@@ -45,11 +45,10 @@ def create_simulations_files():
         mode.append(modes['rotation'])
         enable.append(1)
 
-        # Calculate sin(z) and cos(z) with cordic software implementation
-        result = cordic(0.0, 0.0, deg2rad(deg), mode='rotation')
-        x_cordic.append(result['cos'])
-        y_cordic.append(result['sin'])
-        z_cordic.append(result['arctan2'])
+        # Calculate sin(z) and cos(z) with numpy
+        x_cordic.append(np.cos(deg2rad(deg)))
+        y_cordic.append(np.sin(deg2rad(deg)))
+        z_cordic.append(0)
 
         # Create X and Y data for cordic hardware implementation arctan2(y / x) result
         position = [np.cos(deg2rad(deg)), np.sin(deg2rad(deg))]
@@ -59,11 +58,10 @@ def create_simulations_files():
         mode.append(modes['vectoring'])
         enable.append(1)
 
-        # Calculate arctan2(y / x) with cordic software implementation
-        result = cordic(position[0], position[1], 0.0, mode='vectoring')
-        x_cordic.append(result['cos'])
-        y_cordic.append(result['sin'])
-        z_cordic.append(result['arctan2'])
+        # Calculate arctan2(y / x) with numpy
+        x_cordic.append(0)
+        y_cordic.append(0)
+        z_cordic.append(np.arctan2(position[1], position[0]))
 
     # Create files for hardware implementation
     data.append(x)

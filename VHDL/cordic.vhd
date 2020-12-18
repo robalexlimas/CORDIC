@@ -2,6 +2,9 @@
 --Stream Processing CORDIC Algorithm Implementation
 --Author: Robert Limas
 --Year: 2020
+--Research Group GIRA
+--Universidad Pedagogica y Tecnologica de Colombia
+--
 --TOP LEVEL
 --
 --Inputs:

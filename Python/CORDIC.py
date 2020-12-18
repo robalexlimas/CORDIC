@@ -20,7 +20,6 @@ This algorithm works between pi/2 and -pi/2 and has two operation mode
 """
 
 import numpy as np
-import math
 
 
 def cordic(x, y, z, mode='rotation', iterations=16):
@@ -32,9 +31,9 @@ def cordic(x, y, z, mode='rotation', iterations=16):
 
         d_current = (1 if y_current < 0 else -1) if mode == 'vectoring' else (-1 if z_next < 0 else 1)
 
-        x_next = x_current - (d_current * y_current) / (math.pow(2, i))
-        y_next = y_current + (d_current * x_current) / (math.pow(2, i))
-        z_next = z_current - (np.arctan(d_current * (1 / (math.pow(2, i)))))
+        x_next = x_current - (d_current * y_current) / (np.power(2, i))
+        y_next = y_current + (d_current * x_current) / (np.power(2, i))
+        z_next = z_current - (np.arctan(d_current * (1 / (np.power(2, i)))))
 
         x_current, y_current, z_current = x_next, y_next, z_next
 
@@ -47,16 +46,16 @@ def cordic(x, y, z, mode='rotation', iterations=16):
 
 def cordic_fixed_point(x, y, z, mode='rotation', iterations=16, resolution=14):
     trigonometric_functions = dict()
-    x_current = int(math.pow(2, resolution) / 1.6468) if mode == 'rotation' else x
+    x_current = int(np.power(2, resolution) / 1.6468) if mode == 'rotation' else x
     y_current, z_current, z_next = y, z, z
 
     for i in range(iterations):
 
         d_current = (1 if y_current < 0 else -1) if mode == 'vectoring' else (-1 if z_next < 0 else 1)
 
-        x_next = int(x_current - (d_current * y_current) / (math.pow(2, i)))
-        y_next = int(y_current + (d_current * x_current) / (math.pow(2, i)))
-        z_next = int(z_current - int(math.pow(2, resolution) * (np.arctan(d_current * (1 / (math.pow(2, i)))))))
+        x_next = int(x_current - (d_current * y_current) / (np.power(2, i)))
+        y_next = int(y_current + (d_current * x_current) / (np.power(2, i)))
+        z_next = int(z_current - int(np.power(2, resolution) * (np.arctan(d_current * (1 / (np.power(2, i)))))))
 
         x_current, y_current, z_current = x_next, y_next, z_next
 
@@ -68,8 +67,8 @@ def cordic_fixed_point(x, y, z, mode='rotation', iterations=16, resolution=14):
 
 
 def coding(value, resolution=14):
-    return int(value * math.pow(2, resolution))
+    return int(value * np.power(2, resolution))
 
 
 def decoding(value, resolution=14):
-    return value / math.pow(2, resolution)
+    return value / np.power(2, resolution)
