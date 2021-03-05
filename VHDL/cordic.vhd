@@ -1,6 +1,8 @@
 --**********************************************************************************************************************
 --Stream Processing CORDIC Algorithm Implementation
---Author: Robert Limas
+--Authors:
+--  Robert Limas
+--  Wilson Perez
 --Year: 2020
 --Research Group GIRA
 --Universidad Pedagogica y Tecnologica de Colombia
@@ -22,7 +24,7 @@
 --
 --1. Rotation -> mode = 0
 --    Mode used for calculate sin and cos functions
---    *** Warning: Inputs x and y should be equal to 0 and input z should be has the angle in rad***
+--    *** Warning: Inputs x and y should be equal to 0 and input z should be has the angle in rad ***
 --2. Vectoring -> mode = 1
 --    Mode used for calculate arctan2(y_i / x_i) function
 --    *** Warning: Input z should be equal to 0 ***

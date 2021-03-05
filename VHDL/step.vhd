@@ -1,6 +1,8 @@
 --**********************************************************************************************************************
 --Stream Processing CORDIC Algorithm Implementation
---Author: Robert Limas
+--Authors:
+--  Robert Limas
+--  Wilson Perez
 --Year: 2020
 --Research Group GIRA
 --Universidad Pedagogica y Tecnologica de Colombia
@@ -44,6 +46,7 @@ signal d, d_not: std_logic;
 begin
 
 --Rotation direction multiplexer
+--Select rotation or vectoring mode
 d <= ((not mode) and z_i(n-1)) or (mode and (not y_i(n-1)));
 d_not <= not d;
 
