@@ -1,3 +1,10 @@
+"""
+CORDIC Algorithm implementation
+Authors:
+--  Robert Alexander Limas Sierra
+--  Wilson Javier Perez Holguin
+Year: 2020
+"""
 import json, os
 import numpy as np
 

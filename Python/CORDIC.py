@@ -41,7 +41,7 @@ class Cordic:
         x_current = x
         y_current, z_current = y, 0.0
         _, _, z = self.__iterations_compute(x_current, y_current, z_current, mode='vectoring', coord='hyperbolic')
-        return z
+        return rad_to_deg(z)
 
     def product(self, x, z):
         x_current = x
