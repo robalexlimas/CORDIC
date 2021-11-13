@@ -24,7 +24,7 @@ class Cordic:
         x, y, _ = self.__iterations_compute(x_current, y_current, z_current, mode='rotation', coord='circular')
         return x, y
 
-    def artan(self, x, y):
+    def arctan(self, x, y):
         x_current = x
         y_current, z_current = y, 0.0
         _, _, z = self.__iterations_compute(x_current, y_current, z_current, mode='vectoring', coord='circular')
@@ -37,7 +37,7 @@ class Cordic:
         x, y, _ = self.__iterations_compute(x_current, y_current, z_current, mode='rotation', coord='hyperbolic')
         return x, y
 
-    def artanh(self, x, y):
+    def arctanh(self, x, y):
         x_current = x
         y_current, z_current = y, 0.0
         _, _, z = self.__iterations_compute(x_current, y_current, z_current, mode='vectoring', coord='hyperbolic')

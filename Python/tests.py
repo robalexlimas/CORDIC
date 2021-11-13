@@ -6,7 +6,7 @@ Authors:
 Year: 2020
 """
 from CORDICFixedPoint import Cordic
-from utils import deg_to_rad, mean, absolute_error, variance
+from utils import deg_to_rad, mean, relative_error, variance
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
@@ -63,7 +63,7 @@ def convergence_test_circular():
     for i in z:
         x = np.cos(deg_to_rad(i))
         y = np.sin(deg_to_rad(i))
-        arctan_cordic = cordic.artan(x, y)
+        arctan_cordic = cordic.arctan(x, y)
         arctan.append(arctan_cordic)
     axes[1].plot(z, arctan, 'b-')
     axes[1].set_title('Vectoring Mode')
@@ -92,7 +92,7 @@ def convergence_test_hyperbolic():
     for i in z:
         x = np.cos(deg_to_rad(i))
         y = np.sin(deg_to_rad(i))
-        arctanh_cordic = cordic.artanh(x, y)
+        arctanh_cordic = cordic.arctanh(x, y)
         arctanh.append(arctanh_cordic)
     axes[1].plot(z, arctanh, 'b-')
     axes[1].set_title('Vectoring Mode')
@@ -118,7 +118,7 @@ def resolution_bits_test():
             cordic = Cordic(resolution_param=bit)
             cos, _ = cordic.cos_sin(angle)
             cos_numpy = np.cos(deg_to_rad(angle))
-            err = absolute_error(cos_numpy, cos)
+            err = relative_error(cos_numpy, cos)
             error_in_angle.append(err)
         mean_error = mean(error_in_angle)
         error.append(mean_error)
@@ -149,7 +149,7 @@ def iterations_test():
             cordic = Cordic(iterations_param=iteration)
             cos, _ = cordic.cos_sin(angle)
             cos_numpy = np.cos(deg_to_rad(angle))
-            err = absolute_error(cos_numpy, cos)
+            err = relative_error(cos_numpy, cos)
             error_in_angle.append(err)
         mean_error = mean(error_in_angle)
         error.append(mean_error)
@@ -164,7 +164,7 @@ def iterations_test():
     axes[1].set_ylabel('Error (%)')
     axes[1].set_xlabel('Iterations')
     axes[1].set_xlim(8, 20)
-    axes[1].set_ylim(0, 0.2)
+    axes[1].set_ylim(-0.1, 0.1)
     axes[1].grid()
     plt.grid()
     plt.show()

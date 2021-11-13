@@ -5,11 +5,11 @@ Authors:
 --  Wilson Javier Perez Holguin
 Year: 2020
 """
-from tests import test
+from results import show_results
 
 
 def main():
-    test()
+    show_results()
 
 
 if __name__ == '__main__':
