@@ -15,7 +15,7 @@ def load_settings():
     settings_path = os.path.join(path, 'settings.json')
     with open(settings_path, 'r') as f:
         data = json.load(f)
-    return data['linear'], data['cuircular'], data['hyperbolic']
+    return data['linear'], data['cuircular'], data['hyperbolic'], data['resolution']
 
 
 def coding(value, resolution=14):

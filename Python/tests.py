@@ -48,8 +48,8 @@ def convergence_test_linear():
 
 def convergence_test_circular():
     # Circular Coordinate System
-    # Rotation mode: CORDIC algorithm compute when |z| < 99.9°
-    # Vectoring mode: CORDIC algorithm when |z| < 99.9°
+    # Rotation mode: CORDIC algorithm compute when |angle| < 99.9°
+    # Vectoring mode: CORDIC algorithm when |result| < 99.9°
     z = np.arange(-120, 120, 0.01)
     cos, arctan = [], []
     cordic = Cordic()
@@ -77,8 +77,8 @@ def convergence_test_circular():
 
 def convergence_test_hyperbolic():
     # Circular Coordinate System
-    # Rotation mode: CORDIC algorithm compute when |z| < 99.9°
-    # Vectoring mode: CORDIC algorithm when |z| < 99.9°
+    # Rotation mode: CORDIC algorithm compute when |angle| < 64°
+    # Vectoring mode: CORDIC algorithm when |result| < 64°
     z = np.arange(-70, 70, 0.01)
     cosh, arctanh = [], []
     cordic = Cordic()
