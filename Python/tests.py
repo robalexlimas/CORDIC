@@ -5,8 +5,8 @@ Authors:
 --  Wilson Javier Perez Holguin
 Year: 2020
 """
-from CORDIC import Cordic
-from utils import deg_to_rad
+from CORDICFixedPoint import Cordic
+from utils import deg_to_rad, mean, absolute_error, variance
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
@@ -14,8 +14,6 @@ import matplotlib.pyplot as plt
 
 matplotlib.rcParams.update({
     'font.size': 18,
-    "grid.color": "0.5",
-    "grid.linestyle": "-",
 })
 
 
@@ -105,10 +103,73 @@ def convergence_test_hyperbolic():
     
 
 def convergence_test():
-    convergence_test_hyperbolic()
     convergence_test_circular()
+    convergence_test_hyperbolic()
     convergence_test_linear()
 
 
+def resolution_bits_test():
+    bits = np.arange(1, 20, 1)
+    angles = np.arange(1, 90, 1)
+    error = []
+    for bit in bits:
+        error_in_angle = []
+        for angle in angles:
+            cordic = Cordic(resolution_param=bit)
+            cos, _ = cordic.cos_sin(angle)
+            cos_numpy = np.cos(deg_to_rad(angle))
+            err = absolute_error(cos_numpy, cos)
+            error_in_angle.append(err)
+        mean_error = mean(error_in_angle)
+        error.append(mean_error)
+    fig, axes = plt.subplots(1, 2)
+    axes[0].plot(bits, error, 'b*-')
+    axes[0].set_title('Relative Error')
+    axes[0].set_ylabel('Error (%)')
+    axes[0].set_xlabel('Resolution in Bits')
+    axes[0].grid()
+    axes[1].plot(bits, error, 'b*-')
+    axes[1].set_title('Relative Error')
+    axes[1].set_ylabel('Error (%)')
+    axes[1].set_xlabel('Resolution in Bits')
+    axes[1].set_xlim(13, 20)
+    axes[1].set_ylim(-0.1, 1)
+    axes[1].grid()
+    plt.grid()
+    plt.show()
+
+
+def iterations_test():
+    iterations = np.arange(1, 20, 1)
+    angles = np.arange(1, 90, 1)
+    error = []
+    for iteration in iterations:
+        error_in_angle = []
+        for angle in angles:
+            cordic = Cordic(iterations_param=iteration)
+            cos, _ = cordic.cos_sin(angle)
+            cos_numpy = np.cos(deg_to_rad(angle))
+            err = absolute_error(cos_numpy, cos)
+            error_in_angle.append(err)
+        mean_error = mean(error_in_angle)
+        error.append(mean_error)
+    fig, axes = plt.subplots(1, 2)
+    axes[0].plot(iterations, error, 'b*-')
+    axes[0].set_title('Relative Error')
+    axes[0].set_ylabel('Error (%)')
+    axes[0].set_xlabel('Iterations')
+    axes[0].grid()
+    axes[1].plot(iterations, error, 'b*-')
+    axes[1].set_title('Relative Error')
+    axes[1].set_ylabel('Error (%)')
+    axes[1].set_xlabel('Iterations')
+    axes[1].set_xlim(8, 20)
+    axes[1].set_ylim(0, 0.2)
+    axes[1].grid()
+    plt.grid()
+    plt.show()
+
+
+
 def test():
-    convergence_test()
+    resolution_bits_test()

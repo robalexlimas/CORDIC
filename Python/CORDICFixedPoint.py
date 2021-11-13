@@ -9,13 +9,17 @@ import numpy as np
 from utils import coding, decoding, deg_to_rad, load_settings, rad_to_deg
 
 
-class CordicFixedPoint:
-    def __init__(self):
+class Cordic:
+    def __init__(self, resolution_param='', iterations_param=''):
         linear_data, cuircular_data, hyperbolic_data, resolution = load_settings()
         self.__linear_data = linear_data
         self.__circular_data = cuircular_data
         self.__hyperbolic_data = hyperbolic_data
-        self.__resolution = resolution
+        if (resolution_param != ''):
+            self.__resolution = resolution_param
+        else:
+            self.__resolution = resolution
+        self.__iterations = iterations_param
         self.__constants_compute()
 
     def cos_sin(self, angle_deg):
@@ -26,33 +30,33 @@ class CordicFixedPoint:
         return x, y
 
     def artan(self, x, y):
-        x_current = x
-        y_current, z_current = y, 0.0
+        x_current = coding(x, self.__resolution)
+        y_current, z_current = coding(y, self.__resolution), 0.0
         _, _, z = self.__iterations_compute(x_current, y_current, z_current, mode='vectoring', coord='circular')
         return rad_to_deg(z)
 
     def cosh_sinh(self, angle_deg):
-        angle_rad = deg_to_rad(angle_deg)
+        angle_rad = coding(deg_to_rad(angle_deg), self.__resolution)
         x_current = self.__const_hyperbolic
         y_current, z_current = 0.0, angle_rad
         x, y, _ = self.__iterations_compute(x_current, y_current, z_current, mode='rotation', coord='hyperbolic')
         return x, y
 
     def artanh(self, x, y):
-        x_current = x
-        y_current, z_current = y, 0.0
+        x_current = coding(x, self.__resolution)
+        y_current, z_current = coding(y, self.__resolution), 0.0
         _, _, z = self.__iterations_compute(x_current, y_current, z_current, mode='vectoring', coord='hyperbolic')
         return rad_to_deg(z)
 
     def product(self, x, z):
-        x_current = x
-        y_current, z_current = 0.0, z
+        x_current = coding(x, self.__resolution)
+        y_current, z_current = 0.0, coding(z, self.__resolution)
         _, y, _ = self.__iterations_compute(x_current, y_current, z_current, mode='rotation', coord='linear')
         return y
 
     def division(self, x, y):
-        x_current = x
-        y_current, z_current = y, 0.0
+        x_current = coding(x, self.__resolution)
+        y_current, z_current = coding(y, self.__resolution), 0.0
         _, _, z = self.__iterations_compute(x_current, y_current, z_current, mode='vectoring', coord='linear')
         return z
 
@@ -96,11 +100,14 @@ class CordicFixedPoint:
 
     def __select_items(self, coord):
         if coord == 'circular':
-            return self.__circular_data
+            data = self.__circular_data
         elif coord == 'hyperbolic':
-            return self.__hyperbolic_data
+            data = self.__hyperbolic_data
         else:
-            return self.__linear_data
+            data = self.__linear_data
+        if (self.__iterations != ''):
+            data = data[:self.__iterations]
+        return data
 
     def __constants_compute(self):
         const_circular, const_hyperbolic = 1.0, 1.0
@@ -110,4 +117,3 @@ class CordicFixedPoint:
             const_hyperbolic = const_hyperbolic * np.sqrt(1 - (1 / (2 ** (2 * (i + 1)))))
         self.__const_circular =  coding(1 / const_circular, self.__resolution)
         self.__const_hyperbolic = coding(1 / const_hyperbolic, self.__resolution)
-        self.__const_linear = coding(1, self.__resolution)

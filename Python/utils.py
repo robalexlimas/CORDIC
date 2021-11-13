@@ -19,11 +19,11 @@ def load_settings():
 
 
 def coding(value, resolution=14):
-    return int(value * np.power(2, resolution))
+    return int(value * (2 ** resolution))
 
 
 def decoding(value, resolution=14):
-    return value / np.power(2, resolution)
+    return value / (2 ** resolution)
 
 
 def deg_to_rad(value):
@@ -32,3 +32,21 @@ def deg_to_rad(value):
 
 def rad_to_deg(value):
     return value * 180 / np.pi
+
+
+def absolute_error(real_value, calculate_value):
+    return abs((real_value - calculate_value) / real_value) * 100
+
+
+def mean(values):
+    total = 0
+    for value in values:
+        total += value
+    return total / len(values)
+
+
+def variance(values, mean):
+    total = 0
+    for value in values:
+        total += ((value - mean) ** 2)
+    return total / len(values)
