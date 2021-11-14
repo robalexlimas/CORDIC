@@ -1,8 +1,8 @@
 --**********************************************************************************************************************
 --Stream Processing CORDIC Algorithm Implementation
 --Authors:
---  Robert Limas
---  Wilson Perez
+--  Robert Alexander Limas Sierra
+--  Wilson Javier Perez Holguin
 --Year: 2020
 --Research Group GIRA
 --Universidad Pedagogica y Tecnologica de Colombia
@@ -28,6 +28,9 @@
 --2. Vectoring -> mode = 1
 --    Mode used for calculate arctan2(y_i / x_i) function
 --    *** Warning: Input z should be equal to 0 ***
+--
+--
+-- Coor System when '0' circular system and '1' hyperbolic system
 --**********************************************************************************************************************
 
 library ieee;
@@ -36,14 +39,14 @@ use ieee.numeric_std.all;
 
 entity cordic is
 generic(
-	n: natural := 28;
+	n: natural := 16;
 	iterations: natural := 16
 );
 port(
 	x_i, y_i, z_i: in std_logic_vector(n-1 downto 0);
-	mode, clk, rst, enable: in std_logic;
+	mode, clk, rst, enable, coor_system: in std_logic;
 	x_o, y_o, z_o: out std_logic_vector(n-1 downto 0);
-	mode_o, enable_o: out std_logic
+	mode_o, enable_o, coor_o: out std_logic
 );
 end entity;
 
@@ -57,8 +60,8 @@ type data is array (0 to iterations-1) of std_logic_vector(n-1 downto 0);
 signal xi_temp, yi_temp, zi_temp: data;
 signal xo_temp, yo_temp, zo_temp: data;
 
-signal mode_temp, enable_temp: std_logic_vector(iterations+1 downto 0);
-signal x_temp: std_logic_vector(n-1 downto 0);
+signal mode_temp, enable_temp, coor_temp: std_logic_vector(iterations+1 downto 0);
+signal x_temp, conts_aux: std_logic_vector(n-1 downto 0);
 
 --Constant values arcotangent table
 type data_arctan is array (0 to iterations-1) of std_logic_vector(n-1 downto 0);
@@ -71,6 +74,19 @@ signal arctan: data_arctan := (
 	std_logic_vector(to_signed(15, n)), std_logic_vector(to_signed(7, n)), 
 	std_logic_vector(to_signed(3, n)), std_logic_vector(to_signed(1, n)), 
 	std_logic_vector(to_signed(0, n)), std_logic_vector(to_signed(0, n))
+);
+
+--Constant values hyperbolic arcotangent table
+type data_arctanh is array (0 to iterations-1) of std_logic_vector(n-1 downto 0);
+signal arctanh: data_arctanh := (
+	std_logic_vector(to_signed(8_999, n)), std_logic_vector(to_signed(4_184, n)), 
+	std_logic_vector(to_signed(2_058, n)), std_logic_vector(to_signed(1_025, n)), 
+	std_logic_vector(to_signed(1_025, n)), std_logic_vector(to_signed(512, n)), 
+	std_logic_vector(to_signed(256, n)), std_logic_vector(to_signed(128, n)), 
+	std_logic_vector(to_signed(64, n)), std_logic_vector(to_signed(32, n)), 
+	std_logic_vector(to_signed(16, n)), std_logic_vector(to_signed(8, n)), 
+	std_logic_vector(to_signed(4, n)), std_logic_vector(to_signed(2, n)), 
+	std_logic_vector(to_signed(1, n)), std_logic_vector(to_signed(0, n))
 );
 
 begin
@@ -100,17 +116,22 @@ enable_mode: process(clk, rst)
 begin
 if rst = '0' then
 	mode_temp <= (others=>'0');
+	coor_temp <= (others=>'0');
 	enable_temp <= (others=>'0');
 elsif rising_edge(clk) then
 	mode_temp(0) <= mode;
 	mode_temp(iterations+1 downto 1) <= mode_temp(iterations downto 0);
+	coor_temp(0) <= coor_system;
+	coor_temp(iterations+1 downto 1) <= coor_temp(iterations downto 0);
 	enable_temp(0) <= enable;
 	enable_temp(iterations+1 downto 1) <= enable_temp(iterations downto 0);
 end if;
 end process enable_mode;
 
---Scale factor (1 / 1.6468) * 2**14 = 9.949
-x_temp <= std_logic_vector(to_signed(9_949, n)) when mode_temp(0) = '0' else x_i_t;
+-- Scale factor (1 / 1.6468) * 2**14 = 9.949 for circular coor
+-- Scale factor (1 / 0.8297) * 2**14 = 19.744 for hyperbolic coor
+conts_aux <= std_logic_vector(to_signed(9_949, n)) when coor_temp(0) = '0' else std_logic_vector(to_signed(19_744, n));
+x_temp <= conts_aux when mode_temp(0) = '0' else x_i_t;
 
 --Generic implementation
 iteration: for i in 0 to iterations-1 generate
@@ -124,7 +145,9 @@ iteration: for i in 0 to iterations-1 generate
 		y_i => yi_temp(i),
 		z_i => zi_temp(i),
 		arctan => arctan(i),
+		arctanh => arctanh(i),
 		mode => mode_temp(i+1),
+		coor => coor_temp(i+1),
 		x_o => xo_temp(i),
 		y_o => yo_temp(i),
 		z_o => zo_temp(i)
@@ -206,6 +229,7 @@ x_o <= x_o_t;
 y_o <= y_o_t;
 z_o <= z_o_t;
 mode_o <= mode_temp(iterations+1);
+coor_o <= coor_temp(iterations+1);
 enable_o <= enable_temp(iterations+1);
 
 end rtl;

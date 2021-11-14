@@ -21,7 +21,7 @@ use std.textio.all;
 
 entity tb is
 generic(
-	n: natural := 28
+	n: natural := 16
 );
 end entity;
 
@@ -32,26 +32,33 @@ file data_y_input: text open READ_MODE is "../VHDL/input/input_y.txt";
 file data_z_input: text open READ_MODE is "../VHDL/input/input_z.txt";
 file data_mode_input: text open READ_MODE is "../VHDL/input/input_mode.txt";
 file data_enable_input: text open READ_MODE is "../VHDL/input/input_enable.txt";
+file data_coor_input: text open READ_MODE is "../VHDL/input/input_coor.txt";
 
 file data_x_output: text open WRITE_MODE is "../VHDL/output/output_x_vhdl.txt";
 file data_y_output: text open WRITE_MODE is "../VHDL/output/output_y_vhdl.txt";
 file data_z_output: text open WRITE_MODE is "../VHDL/output/output_z_vhdl.txt";
 file data_mode_output: text open WRITE_MODE is "../VHDL/output/output_mode_vhdl.txt";
 file data_enable_output: text open WRITE_MODE is "../VHDL/output/output_enable_vhdl.txt";
+file data_coor_output: text open WRITE_MODE is "../VHDL/output/output_coor_vhdl.txt";
 
 signal x_i, y_i, z_i: std_logic_vector(n-1 downto 0) := (others=>'0');
 signal x_o, y_o, z_o: std_logic_vector(n-1 downto 0);
-signal enable_i, enable_o, clk, rst, mode_i, mode_o: std_logic := '0';
+signal enable_i, enable_o, clk, rst, mode_i, mode_o, coor_i, coor_o: std_logic := '0';
 
 begin
 
 --Design instantiation
 cordic0: entity work.cordic
+generic map(
+	n => n,
+	iterations => 16
+)
 port map(
 	x_i => x_i,
 	y_i => y_i,
 	z_i => z_i,
 	mode => mode_i,
+	coor_system => coor_i,
 	clk => clk,
 	rst => rst,
 	enable => enable_i,
@@ -59,14 +66,15 @@ port map(
 	y_o => y_o,
 	z_o => z_o,
 	mode_o => mode_o,
-	enable_o => enable_o
+	enable_o => enable_o,
+	coor_o => coor_o
 );
 
 --Clock signal generation
 process
 begin
 clk <= not clk;
-wait for 10 ns;
+wait for 5 ns;
 end process;
 
 --Reset signal generation
@@ -80,15 +88,15 @@ end process;
 
 --Reading files
 process
-	variable line_x_input, line_y_input, line_z_input: line;
-	variable line_x_output, line_y_output, line_z_output: line;
+	variable line_x_input, line_y_input, line_z_input, line_coor_input: line;
+	variable line_x_output, line_y_output, line_z_output, line_coor_output: line;
 	variable line_enable_input, line_mode_input: line;
 	variable line_enable_output, line_mode_output: line;
-	variable data_x_i, data_y_i, data_z_i: integer;
-	variable data_x_o, data_y_o, data_z_o: integer;
+	variable data_x_i, data_y_i, data_z_i, data_coor_i: integer;
+	variable data_x_o, data_y_o, data_z_o, data_coor_o: integer;
 	variable data_enable_i, data_mode_i: integer;
 	variable data_enable_o, data_mode_o: integer;
-	variable enable, mode: std_logic_vector(0 downto 0);
+	variable enable, mode, coor: std_logic_vector(0 downto 0);
 begin
 	wait for 600 ns;
 	wait until falling_edge(clk);
@@ -120,6 +128,12 @@ begin
 		mode := std_logic_vector(to_unsigned(data_mode_i, 1));
 		mode_i <= mode(0);
 		
+		--Coordinate System data reading
+		readLine(data_coor_input, line_coor_input);
+		read(line_coor_input, data_coor_i);
+		coor := std_logic_vector(to_signed(data_coor_i, 1));
+		coor_i <= coor(0);
+		
 		wait until falling_edge(clk);
 		
 		--X data writing
@@ -147,7 +161,13 @@ begin
 		mode(0) := mode_o;
 		data_mode_o := to_integer(unsigned(mode));
 		write(line_mode_output, data_mode_o);
-		writeLine(data_mode_output, line_mode_output);		
+		writeLine(data_mode_output, line_mode_output);
+		
+		--Coordinate System data writing
+		coor(0) := coor_o;
+		data_coor_o := to_integer(unsigned(coor));
+		write(line_coor_output, data_coor_o);
+		writeLine(data_coor_output, line_coor_output);
 	end loop;
 	wait;
 end process;
