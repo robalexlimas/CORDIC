@@ -40,7 +40,7 @@ use ieee.numeric_std.all;
 entity cordic is
 generic(
 	n: natural := 16;
-	iterations: natural := 16
+	iterations: natural := 14
 );
 port(
 	x_i, y_i, z_i: in std_logic_vector(n-1 downto 0);
@@ -72,8 +72,8 @@ signal arctan: data_arctan := (
 	std_logic_vector(to_signed(255, n)), std_logic_vector(to_signed(127, n)), 
 	std_logic_vector(to_signed(63, n)), std_logic_vector(to_signed(31, n)), 
 	std_logic_vector(to_signed(15, n)), std_logic_vector(to_signed(7, n)), 
-	std_logic_vector(to_signed(3, n)), std_logic_vector(to_signed(1, n)), 
-	std_logic_vector(to_signed(0, n)), std_logic_vector(to_signed(0, n))
+	std_logic_vector(to_signed(3, n)), std_logic_vector(to_signed(1, n))
+	--std_logic_vector(to_signed(0, n)), std_logic_vector(to_signed(0, n))
 );
 
 --Constant values hyperbolic arcotangent table
@@ -85,8 +85,8 @@ signal arctanh: data_arctanh := (
 	std_logic_vector(to_signed(256, n)), std_logic_vector(to_signed(128, n)), 
 	std_logic_vector(to_signed(64, n)), std_logic_vector(to_signed(32, n)), 
 	std_logic_vector(to_signed(16, n)), std_logic_vector(to_signed(8, n)), 
-	std_logic_vector(to_signed(4, n)), std_logic_vector(to_signed(2, n)), 
-	std_logic_vector(to_signed(1, n)), std_logic_vector(to_signed(0, n))
+	std_logic_vector(to_signed(4, n)), std_logic_vector(to_signed(2, n))
+	--std_logic_vector(to_signed(1, n)), std_logic_vector(to_signed(0, n))
 );
 
 begin

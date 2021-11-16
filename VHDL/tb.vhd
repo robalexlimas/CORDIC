@@ -51,7 +51,7 @@ begin
 cordic0: entity work.cordic
 generic map(
 	n => n,
-	iterations => 16
+	iterations => 14
 )
 port map(
 	x_i => x_i,
