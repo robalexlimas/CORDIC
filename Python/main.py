@@ -10,7 +10,7 @@ from tests import test
 
 
 def main():
-    test()
+    show_results()
 
 
 if __name__ == '__main__':

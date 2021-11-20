@@ -32,7 +32,6 @@ def convergence_test_linear():
     axes[0].set_title('Rotation Mode')
     axes[0].set_ylabel('Products')
     axes[0].set_xlabel('Z Values')
-    axes[0].grid()
     z = np.arange(-5, 5, 0.01)
     for i in z:
         quotients.append(cordic.division(x, i))
@@ -40,7 +39,6 @@ def convergence_test_linear():
     axes[1].set_title('Vectoring Mode')
     axes[1].set_ylabel('Quotients')
     axes[1].set_xlabel('Y Values')
-    axes[1].grid()
     plt.show()
 
 
@@ -59,7 +57,6 @@ def convergence_test_circular():
     axes[0].set_title('Rotation Mode')
     axes[0].set_ylabel('Magnitude')
     axes[0].set_xlabel('Angle')
-    axes[0].grid()
     for i in z:
         x = np.cos(deg_to_rad(i))
         y = np.sin(deg_to_rad(i))
@@ -69,7 +66,6 @@ def convergence_test_circular():
     axes[1].set_title('Vectoring Mode')
     axes[1].set_ylabel('Angle')
     axes[1].set_xlabel('Angle')
-    axes[1].grid()
     plt.show()
 
 
@@ -88,7 +84,6 @@ def convergence_test_hyperbolic():
     axes[0].set_title('Rotation Mode')
     axes[0].set_ylabel('Magnitude')
     axes[0].set_xlabel('Angle')
-    axes[0].grid()
     for i in z:
         x = np.cos(deg_to_rad(i))
         y = np.sin(deg_to_rad(i))
@@ -98,7 +93,6 @@ def convergence_test_hyperbolic():
     axes[1].set_title('Vectoring Mode')
     axes[1].set_ylabel('Angle')
     axes[1].set_xlabel('Angle')
-    axes[1].grid()
     plt.show()
     
 
@@ -127,7 +121,6 @@ def resolution_bits_test():
     plt.ylabel('Error (%)')
     plt.xlabel('Resolution in Bits')
     plt.xticks([3, 6, 9, 12, 15, 18])
-    plt.grid()
     plt.show()
 
 
@@ -150,10 +143,9 @@ def iterations_test():
     plt.ylabel('Error (%)')
     plt.xlabel('Iterations')
     plt.xticks([3, 6, 9, 12, 15, 18])
-    plt.grid()
     plt.show()
 
 
 
 def test():
-    convergence_test()
+    iterations_test()

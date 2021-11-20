@@ -38,6 +38,10 @@ def absolute_error(real_value, calculate_value):
     return abs((real_value - calculate_value) / real_value) * 100 if real_value != 0 else abs((real_value - calculate_value))
 
 
+def relative_error(real_value, calculate_value):
+    return (real_value - calculate_value) / real_value * 100
+
+
 def mean(values):
     total = 0
     for value in values:
