@@ -155,5 +155,5 @@ def plot_results(vhdl_values, numpy_values, axes_data, name):
     axes[1].set_title('Relative Error')
     axes[1].set_ylabel('Error (%)')
     axes[1].set_xlabel('Angle')
-    axes[1].set_ylim(-0.8, 1.5)
+    axes[1].set_ylim(-0.05, 0.05)
     plt.show()

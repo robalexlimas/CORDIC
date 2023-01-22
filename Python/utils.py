@@ -39,7 +39,8 @@ def absolute_error(real_value, calculate_value):
 
 
 def relative_error(real_value, calculate_value):
-    return (real_value - calculate_value) / real_value * 100
+    # return (real_value - calculate_value) / real_value * 100
+    return (real_value - calculate_value) /(180) * 100
 
 
 def mean(values):
